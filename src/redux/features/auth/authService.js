@@ -1,0 +1,167 @@
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+// email validation
+export const validateEmail = (email) => {
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
+};
+
+// register user
+export const registerUser = async (userData) => {
+  try {
+    const res = await axios.post(
+      `${BACKEND_URL}/api/users/register`,
+      userData,
+      { withCredentials: true }
+    );
+
+    if (res.status === 'ok') {
+      toast.success('User Register Successfully');
+    }
+    return res.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+// login user
+export const loginUser = async (userData) => {
+  try {
+    const res = await axios.post(`${BACKEND_URL}/api/users/login`, userData, {
+      withCredentials: true,
+    });
+
+    if (res.status === 'ok') {
+      toast.success('User Login Successfully');
+    }
+    return res.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+// logout user
+export const logoutUser = async () => {
+  try {
+    await axios.get(`${BACKEND_URL}/api/users/logout`, {
+      withCredentials: true,
+    });
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+// forgot password
+export const forgotPassword = async (userData) => {
+  try {
+    const res = await axios.post(
+      `${BACKEND_URL}/api/users/forgotpassword`,
+      userData,
+      {
+        withCredentials: true,
+      }
+    );
+    toast.success(res.data.message);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+// Reset Password
+export const resetPassword = async (userData, resetToken) => {
+  try {
+    const response = await axios.put(
+      `${BACKEND_URL}/api/users/resetpassword/${resetToken}`,
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+// Get Login Status
+export const getLoginStatus = async () => {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/api/users/loggedin`);
+    return response.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+// Get User Profile
+export const getUser = async () => {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/api/users/getuser`);
+    return response.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+// Update Profile
+export const updateUser = async (formData) => {
+  try {
+    const response = await axios.put(
+      `${BACKEND_URL}/api/users/updateuser`,
+      formData
+    );
+    return response.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+// Update Profile
+export const changePassword = async (formData) => {
+  try {
+    const response = await axios.put(
+      `${BACKEND_URL}/api/users/changepassword`,
+      formData
+    );
+    return response.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
